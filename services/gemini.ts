@@ -1,5 +1,8 @@
 import { GoogleGenAI, Chat } from "@google/genai";
 
+// Declare process to avoid TypeScript errors in the client-side build
+declare const process: { env: { API_KEY: string } };
+
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const SYSTEM_INSTRUCTION = `You are the Executive Chef at "The G.T. Road" restaurant in Connaught Place, New Delhi. 
