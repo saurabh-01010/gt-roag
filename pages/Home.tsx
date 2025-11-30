@@ -7,13 +7,17 @@ const Home: React.FC = () => {
   return (
     <div className="w-full overflow-hidden bg-wood-950 bg-noise">
       
-      {/* HERO SECTION - Parallax Effect */}
-      <section className="relative h-screen min-h-[700px] flex items-center justify-center">
+      {/* HERO SECTION */}
+      <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        {/* Optimized Background Image */}
         <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-fixed transform scale-105"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop')" }}
-          ></div>
+          <img 
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=75&w=1600&auto=format&fit=crop"
+            alt="The G.T. Road Ambience"
+            className="w-full h-full object-cover opacity-90"
+            // @ts-ignore - fetchPriority is valid in modern browsers but TS might flag it
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-wood-950/90 via-wood-950/40 to-wood-950"></div>
           <div className="absolute inset-0 bg-wood-950/20 mix-blend-multiply"></div>
         </div>
@@ -33,7 +37,7 @@ const Home: React.FC = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up delay-200">
-            <Link to="/contact" className="group relative px-8 py-4 bg-gold-600 text-wood-950 font-bold tracking-widest overflow-hidden rounded-sm">
+            <Link to="/contact" className="group relative px-8 py-4 bg-gold-600 text-wood-950 font-bold tracking-widest overflow-hidden rounded-sm shadow-lg hover:shadow-gold-600/20 transition-all">
               <span className="relative z-10 group-hover:text-wood-900 transition-colors">RESERVE TABLE</span>
               <div className="absolute inset-0 bg-gold-400 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out"></div>
             </Link>
@@ -59,7 +63,7 @@ const Home: React.FC = () => {
             { icon: Wine, title: "Full Bar", sub: "Premium Spirits" },
             { icon: Clock, title: "All Day", sub: "Lunch & Dinner" },
           ].map((item, idx) => (
-            <div key={idx} className="bg-wood-900/80 backdrop-blur-md border border-gold-900/30 p-6 text-center shadow-2xl hover:bg-wood-800 transition-colors group rounded-sm">
+            <div key={idx} className="bg-wood-900/90 backdrop-blur-md border border-gold-900/30 p-6 text-center shadow-2xl hover:bg-wood-800 transition-colors group rounded-sm transform hover:-translate-y-1 duration-300">
               <div className="mb-4 inline-block p-3 rounded-full bg-wood-950 border border-gold-800 group-hover:border-gold-500 transition-colors">
                 <item.icon className="text-gold-500" size={24} />
               </div>
@@ -76,9 +80,10 @@ const Home: React.FC = () => {
           <div className="relative group">
             <div className="absolute -inset-4 border border-gold-700/30 translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
             <img 
-              src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2070&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=75&w=1200&auto=format&fit=crop" 
               alt="Buffet Spread" 
-              className="relative w-full h-[600px] object-cover filter brightness-90 contrast-125 shadow-2xl" 
+              loading="lazy"
+              className="relative w-full h-[500px] object-cover filter brightness-90 contrast-125 shadow-2xl rounded-sm" 
             />
           </div>
           
@@ -117,7 +122,9 @@ const Home: React.FC = () => {
 
       {/* CTA SECTION */}
       <section className="relative py-24 bg-wood-900 border-t border-gold-900/30">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-felt.png')] opacity-10"></div>
+        {/* CSS Pattern instead of external image request for speed */}
+        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
         <div className="relative max-w-4xl mx-auto px-4 text-center">
            <span className="text-gold-500 tracking-[0.3em] uppercase text-xs font-bold mb-4 block">Reservations</span>
            <h2 className="text-3xl md:text-5xl font-serif font-bold text-stone-100 mb-6">Secure Your Table</h2>
