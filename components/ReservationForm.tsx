@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, User, MessageSquare, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 const ReservationForm: React.FC = () => {
   const [formData, setFormData] = useState({
