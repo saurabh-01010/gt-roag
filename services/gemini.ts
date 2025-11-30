@@ -1,9 +1,7 @@
 import { GoogleGenAI, Chat } from "@google/genai";
 
-// Declare process to avoid TypeScript errors in the client-side build
+// Declare process for TypeScript visibility
 declare const process: { env: { API_KEY: string } };
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const SYSTEM_INSTRUCTION = `You are the Executive Chef at "The G.T. Road" restaurant in Connaught Place, New Delhi. 
 Your persona is warm, welcoming, and deeply knowledgeable about the history of the Grand Trunk Road and its influence on North Indian, Mughlai, and Grill cuisine.
@@ -24,10 +22,26 @@ Menu Highlights to mention if asked:
 Keep your responses concise (under 100 words), appetizing, and polite. Use a slight royal/historic flair in your tone.`;
 
 let chatSession: Chat | null = null;
+let ai: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (!ai) {
+    // Lazy initialization: Only create the instance when needed.
+    // This prevents the app from crashing on startup if the API key is missing.
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      console.warn("Gemini API Key is missing. Chat features will not work.");
+      // Return null or throw specific error handled by UI
+    }
+    ai = new GoogleGenAI({ apiKey: apiKey || 'dummy-key-to-prevent-crash' });
+  }
+  return ai;
+};
 
 export const getChefChat = (): Chat => {
   if (!chatSession) {
-    chatSession = ai.chats.create({
+    const aiInstance = getAI();
+    chatSession = aiInstance.chats.create({
       model: 'gemini-2.5-flash',
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
@@ -38,7 +52,12 @@ export const getChefChat = (): Chat => {
 };
 
 export const sendMessageToChef = async (message: string) => {
-  const chat = getChefChat();
-  const result = await chat.sendMessageStream({ message });
-  return result;
+  try {
+    const chat = getChefChat();
+    const result = await chat.sendMessageStream({ message });
+    return result;
+  } catch (error) {
+    console.error("Error sending message to chef:", error);
+    throw error;
+  }
 };
